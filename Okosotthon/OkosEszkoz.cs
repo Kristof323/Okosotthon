@@ -6,34 +6,11 @@ namespace Okosotthon
 {
     public abstract class OkosEszkoz
     {
-        private string azonosito = string.Empty;
-        private string nev = string.Empty;
-        private bool onlineE;
-        private DateTime utolsoFrissites;
+        public string Azonosito { get; private set; }
+        public string Nev { get; private set; }
+        public bool OnlineE { get; private set; }
+        public DateTime UtolsoFrissites { get; protected set; }
 
-        public string Azonosito
-        {
-            get { return this.azonosito; }
-            private set { this.azonosito = value; }
-        }
-
-        public string Nev
-        {
-            get { return this.nev; }
-            private set { this.nev = value; }
-        }
-
-        public bool OnlineE
-        {
-            get { return this.onlineE; }
-            private set { this.onlineE = value; }
-        }
-
-        public DateTime UtolsoFrissites
-        {
-            get { return this.utolsoFrissites; }
-            protected set { this.utolsoFrissites = value; }
-        }
 
         public OkosEszkoz(string azonosito, string nev)
         {
@@ -46,32 +23,28 @@ namespace Okosotthon
         public void Csatlakozas()
         {
             this.OnlineE = true;
-            this.UtolsoFrissites = DateTime.Now;
         }
+
 
         public void KapcsolatBontasa()
         {
             this.OnlineE = false;
-            this.UtolsoFrissites = DateTime.Now;
         }
 
-        // Sablonfüggvény (Template Method)
         public bool DiagnosztikaFuttatasa()
         {
-            if (!this.OnlineE)
+            if (this.OnlineE)
             {
-                return false;
+                return this.OnTesztFuttatasa();
             }
-
-            bool eredmeny = this.OnTesztFuttatasa();
-            return eredmeny;
+            return false;
         }
 
         public virtual void GyariBeallitasokVisszaallitasa()
         {
-            // Alapértelmezett beállítások: frissítési idő újraállítása
-            this.UtolsoFrissites = DateTime.Now;
+            Console.WriteLine($"{Azonosito} - {Nev} eszközön alapértelmezett beállítások visszaállítása.");
         }
+
 
         public abstract void ParancsVegrehajtasa(string parancs);
         public abstract string AllapotJelentes();
